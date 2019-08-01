@@ -5,7 +5,11 @@ using UnityEngine;
 public class PlayerLocomotion : MonoBehaviour
 {
     public PipeSystem PipeSystem;
-    public Transform PlayerTransform;
+    public Transform PlayerRootTransform;
+    public Transform PlayerControllableTransform;
+    public Transform CameraTransform;
+    public float ControlRadius = 1.9f;
+    public float CameraRadius = 1.6f;
 
     public float ForwardSpeed;
     public float StrafeSpeed;
@@ -17,6 +21,8 @@ public class PlayerLocomotion : MonoBehaviour
     private float _pipeProgress;
 
     public int AlignmentFrames;
+
+    private float horizontalOffset, verticalOffset;
 
     // Start is called before the first frame update
     void Start()
@@ -35,11 +41,11 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void OrientPlayerToPipe()
     {
-        var originalRotation = PlayerTransform.rotation;
+        var originalRotation = PlayerRootTransform.rotation;
         transform.position = _currentPipe.transform.position;
         transform.rotation = _currentPipe.transform.rotation;
-        PlayerTransform.position = transform.position + transform.up * _currentPipe.CurveRadius;
-        PlayerTransform.rotation = originalRotation;
+        PlayerRootTransform.position = transform.position + transform.up * _currentPipe.CurveRadius;
+        PlayerRootTransform.rotation = originalRotation;
     }
 
     // Update is called once per frame
@@ -54,7 +60,26 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void ProcessDirectionalInput()
     {
-        
+        var playerDirection = (Vector3.up * Input.GetAxisRaw("Vertical")) +
+                              (Vector3.back * Input.GetAxisRaw("Horizontal")).normalized;
+
+        var strafeDistance = playerDirection * StrafeSpeed * Time.smoothDeltaTime;
+        if ((PlayerControllableTransform.localPosition + strafeDistance).sqrMagnitude < ControlRadius * ControlRadius)
+        {
+            PlayerControllableTransform.localPosition += strafeDistance;
+        }
+        else
+        {
+            PlayerControllableTransform.localPosition =
+                (PlayerControllableTransform.localPosition + strafeDistance).normalized * ControlRadius;
+        }
+
+        var cameraOffset = new Vector3(-PlayerControllableTransform.localPosition.z,
+            PlayerControllableTransform.localPosition.y, 0f);
+
+        CameraTransform.localPosition = cameraOffset * CameraRadius / ControlRadius;
+        CameraTransform.localPosition -= Vector3.forward * 3;
+        CameraTransform.LookAt(PlayerRootTransform, PlayerRootTransform.up);
     }
 
     private void MovePlayerForward()

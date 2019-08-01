@@ -17,6 +17,7 @@ public class Pipe : MonoBehaviour
     private Mesh _mesh;
     private Vector3[] _vertices;
     private int[] _triangles;
+    private Vector2[] uv;
 
     // Start is called before the first frame update
     void Awake()
@@ -30,7 +31,32 @@ public class Pipe : MonoBehaviour
         MyMeshFilter.mesh = _mesh;
         SetVertices();
         SetTriangles();
+        SetUV();
         _mesh.RecalculateNormals();
+
+        var middlePosition = GetPointOnCurve(CurveAngle * 0.5f);
+        var marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        marker.transform.localPosition = middlePosition;
+        marker.transform.localScale = Vector3.one * 0.5f;
+        marker.transform.SetParent(transform);
+
+        SpawnObstacle(0.33f);
+        SpawnObstacle(0.66f);
+    }
+
+    private void SpawnObstacle(float pipePercentage)
+    {
+        int obstacleIndex = (int)(_vertices.Length * pipePercentage);
+        var obstaclePosition = _vertices[obstacleIndex];
+
+        var obstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        obstacle.transform.position = obstaclePosition;
+        obstacle.transform.rotation = transform.rotation;
+        obstacle.transform.Rotate(Vector3.back, CurveAngle * pipePercentage);
+        //obstacle.transform.rotation = Quaternion.FromToRotation(obstacle.transform.up, obstacleNormal) * obstacle.transform.rotation;
+        //obstacle.transform.LookAt(obstaclePosition + obstacleNormal);
+        obstacle.transform.localScale = Vector3.one * 4;
+        obstacle.transform.SetParent(transform);
     }
 
     // Update is called once per frame
@@ -47,6 +73,29 @@ public class Pipe : MonoBehaviour
         p.y = r * Mathf.Cos(angleAlongCurve);
         p.z = PipeRadius * Mathf.Sin(angleAlongPipe);
         return p;
+    }
+
+    public Vector3 GetPointOnCurve(float angleAlongCurve)
+    {
+        Vector3 p;
+        float r = (CurveRadius);
+        p.x = -r * Mathf.Sin(angleAlongCurve);
+        p.y = -r * Mathf.Cos(angleAlongCurve);
+        p.z = 0;
+        return p;
+    }
+
+    private void SetUV()
+    {
+        uv = new Vector2[_vertices.Length];
+        for (int i = 0; i < _vertices.Length; i += 4)
+        {
+            uv[i] = Vector2.zero;
+            uv[i + 1] = Vector2.right;
+            uv[i + 2] = Vector2.up;
+            uv[i + 3] = Vector2.one;
+        }
+        _mesh.uv = uv;
     }
 
     private void SetVertices()
