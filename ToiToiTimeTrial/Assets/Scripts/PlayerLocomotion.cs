@@ -20,9 +20,12 @@ public class PlayerLocomotion : MonoBehaviour
 
     private float _pipeProgress;
 
-    public int AlignmentFrames;
+    public Joystick Joystick;
 
     private float horizontalOffset, verticalOffset;
+    public float HorizontalInput;
+    public float VerticalInput;
+
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +55,9 @@ public class PlayerLocomotion : MonoBehaviour
     void Update()
     {
         MovePlayerForward();
-        if (Input.GetAxisRaw("Vertical") != 0f || Input.GetAxisRaw("Horizontal") != 0f)
+        HorizontalInput = Joystick.Horizontal;
+        VerticalInput = Joystick.Vertical;
+        if (Joystick.Vertical != 0f || Joystick.Horizontal != 0f)
         {
             ProcessDirectionalInput();
         }
@@ -60,8 +65,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void ProcessDirectionalInput()
     {
-        var playerDirection = (Vector3.up * Input.GetAxisRaw("Vertical")) +
-                              (Vector3.back * Input.GetAxisRaw("Horizontal")).normalized;
+        var playerDirection = ((Vector3.up * Joystick.Vertical) +
+                              (Vector3.back * Joystick.Horizontal));
 
         var strafeDistance = playerDirection * StrafeSpeed * Time.smoothDeltaTime;
         if ((PlayerControllableTransform.localPosition + strafeDistance).sqrMagnitude < ControlRadius * ControlRadius)

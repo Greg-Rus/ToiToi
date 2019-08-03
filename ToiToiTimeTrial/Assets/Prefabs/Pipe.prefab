@@ -55,6 +55,11 @@ MonoBehaviour:
   minCurveSegmentCount: 8
   maxCurveSegmentCount: 20
   MyMeshFilter: {fileID: 4707651749491889920}
+  Obstacles:
+  - {fileID: 2258602298302165808, guid: 09f2ec13cdc2bd14daedeb14170f08e9, type: 3}
+  - {fileID: 2258602298302165808, guid: 4c0e00f98971baf40ba6396801ff08e1, type: 3}
+  - {fileID: 2258602298302165808, guid: 89b4ed95db9e8cb47b541f6838183187, type: 3}
+  - {fileID: 2258602298302165808, guid: e9f72cfbeea25f44c9f8ecb8b5e74f4c, type: 3}
 --- !u!23 &4707651749491889921
 MeshRenderer:
   m_ObjectHideFlags: 0

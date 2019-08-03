@@ -19,6 +19,8 @@ public class Pipe : MonoBehaviour
     private int[] _triangles;
     private Vector2[] uv;
 
+    public GameObject[] Obstacles;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -34,29 +36,24 @@ public class Pipe : MonoBehaviour
         SetUV();
         _mesh.RecalculateNormals();
 
-        var middlePosition = GetPointOnCurve(CurveAngle * 0.5f);
-        var marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        marker.transform.localPosition = middlePosition;
-        marker.transform.localScale = Vector3.one * 0.5f;
-        marker.transform.SetParent(transform);
-
-        SpawnObstacle(0.33f);
-        SpawnObstacle(0.66f);
+        SpawnObstacles();
     }
 
-    private void SpawnObstacle(float pipePercentage)
+    private void SpawnObstacles()
     {
-        int obstacleIndex = (int)(_vertices.Length * pipePercentage);
-        var obstaclePosition = _vertices[obstacleIndex];
+        ParentObstacleAlongPipe(Instantiate(Obstacles[Random.Range(0,Obstacles.Length)]).transform, 0.25f);
+        ParentObstacleAlongPipe(Instantiate(Obstacles[Random.Range(0, Obstacles.Length)]).transform, 0.5f);
+        ParentObstacleAlongPipe(Instantiate(Obstacles[Random.Range(0, Obstacles.Length)]).transform, 0.75f);
+    }
 
-        var obstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        obstacle.transform.position = obstaclePosition;
-        obstacle.transform.rotation = transform.rotation;
-        obstacle.transform.Rotate(Vector3.back, CurveAngle * pipePercentage);
-        //obstacle.transform.rotation = Quaternion.FromToRotation(obstacle.transform.up, obstacleNormal) * obstacle.transform.rotation;
-        //obstacle.transform.LookAt(obstaclePosition + obstacleNormal);
-        obstacle.transform.localScale = Vector3.one * 4;
+    private void ParentObstacleAlongPipe(Transform obstacle, float pipePercentage)
+    {
         obstacle.transform.SetParent(transform);
+        obstacle.transform.rotation = transform.rotation;
+        obstacle.transform.Rotate(Vector3.back * pipePercentage * CurveAngle);
+        obstacle.transform.position = transform.position;
+        obstacle.transform.position += obstacle.transform.up * CurveRadius;
+        obstacle.transform.Rotate(Vector3.right * Random.Range(0f,360f));
     }
 
     // Update is called once per frame
@@ -79,8 +76,8 @@ public class Pipe : MonoBehaviour
     {
         Vector3 p;
         float r = (CurveRadius);
-        p.x = -r * Mathf.Sin(angleAlongCurve);
-        p.y = -r * Mathf.Cos(angleAlongCurve);
+        p.x = r * Mathf.Sin(angleAlongCurve);
+        p.y = r * Mathf.Cos(angleAlongCurve);
         p.z = 0;
         return p;
     }
