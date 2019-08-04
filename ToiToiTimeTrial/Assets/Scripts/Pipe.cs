@@ -93,7 +93,25 @@ public class Pipe : MonoBehaviour
             uv[i + 3] = Vector2.one;
         }
         _mesh.uv = uv;
+
     }
+
+    //private void SetUV()
+    //{
+    //    uv = new Vector2[_vertices.Length];
+    //    float offset = 0f;
+    //    float step = 1 / (float)PipeSegmentCount;
+    //    for (int i = 0; i < _vertices.Length; i += 4)
+    //    {
+    //        uv[i] = new Vector2(offset, 0);
+    //        uv[i + 1] = new Vector2(offset+step, 0);
+    //        uv[i + 2] = new Vector2(offset, 1);
+    //        uv[i + 3] = new Vector2(offset + step, 1);
+    //        offset += step;
+    //        if (offset > 1) offset = 0f;
+    //    }
+    //    _mesh.uv = uv;
+    //}
 
     private void SetVertices()
     {

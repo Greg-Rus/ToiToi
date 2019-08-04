@@ -530,10 +530,10 @@ MonoBehaviour:
   PlayerRootTransform: {fileID: 2032441430}
   PlayerControllableTransform: {fileID: 1201867709}
   CameraTransform: {fileID: 345689948}
-  ControlRadius: 1.9
+  ControlRadius: 1.5
   CameraRadius: 0.9
-  ForwardSpeed: 1
-  StrafeSpeed: 4
+  ForwardSpeed: 300
+  StrafeSpeed: 6
   Joystick: {fileID: 665789892}
   HorizontalInput: 0
   VerticalInput: 0
@@ -902,6 +902,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1952420190}
   - component: {fileID: 1952420189}
+  - component: {fileID: 1952420191}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -916,7 +917,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1952420188}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 9
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
@@ -983,6 +984,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 88.663, y: 0, z: 0}
+--- !u!114 &1952420191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1952420188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82a7e1d5d50f1134cb827c2c5a17f9db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color1: {r: 1, g: 0, b: 0, a: 0}
+  Color2: {r: 0.26239938, g: 0, b: 0.5283019, a: 0}
+  Color1ChangeSpeed: 1
+  Color2ChangeSpeed: 1
+  Material: {fileID: 2100000, guid: 90cdc9bdc97853f4183d861a6ffa6d0a, type: 2}
+  _heu1: 0
+  s1: 0
+  v1: 0
+  _heu2: 0
+  s2: 0
+  v2: 0
 --- !u!1 &2032441429
 GameObject:
   m_ObjectHideFlags: 0
