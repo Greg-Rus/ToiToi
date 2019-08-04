@@ -82,36 +82,46 @@ public class Pipe : MonoBehaviour
         return p;
     }
 
-    private void SetUV()
-    {
-        uv = new Vector2[_vertices.Length];
-        for (int i = 0; i < _vertices.Length; i += 4)
-        {
-            uv[i] = Vector2.zero;
-            uv[i + 1] = Vector2.right;
-            uv[i + 2] = Vector2.up;
-            uv[i + 3] = Vector2.one;
-        }
-        _mesh.uv = uv;
-
-    }
-
     //private void SetUV()
     //{
     //    uv = new Vector2[_vertices.Length];
-    //    float offset = 0f;
-    //    float step = 1 / (float)PipeSegmentCount;
     //    for (int i = 0; i < _vertices.Length; i += 4)
     //    {
-    //        uv[i] = new Vector2(offset, 0);
-    //        uv[i + 1] = new Vector2(offset+step, 0);
-    //        uv[i + 2] = new Vector2(offset, 1);
-    //        uv[i + 3] = new Vector2(offset + step, 1);
-    //        offset += step;
-    //        if (offset > 1) offset = 0f;
+    //        uv[i] = Vector2.zero;
+    //        uv[i + 1] = Vector2.right;
+    //        uv[i + 2] = Vector2.up;
+    //        uv[i + 3] = Vector2.one;
     //    }
     //    _mesh.uv = uv;
+
     //}
+
+    private void SetUV()
+    {
+        uv = new Vector2[_vertices.Length];
+        int index = 0;
+        float step = 1f / PipeSegmentCount;
+        for (int i = 0; i < _vertices.Length; i += 4)
+        {
+            index++;
+            if (index == PipeSegmentCount)
+            {
+                index = 0;
+            }
+            var offsetClose = index * step;
+
+            var offsetFar = offsetClose + step;
+            if (index == PipeSegmentCount - 1)
+            {
+                offsetFar = 1f;
+            }
+            uv[i]     = new Vector2(offsetClose, 0);
+            uv[i + 1] = new Vector2(offsetFar, 0);
+            uv[i + 2] = new Vector2(offsetClose, 1);
+            uv[i + 3] = new Vector2(offsetFar, 1);
+        }
+        _mesh.uv = uv;
+    }
 
     private void SetVertices()
     {
