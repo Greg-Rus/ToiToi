@@ -25,6 +25,7 @@ public class PlayerLocomotion : MonoBehaviour
     private float horizontalOffset, verticalOffset;
     public float HorizontalInput;
     public float VerticalInput;
+    public float CameraTrailDistance;
 
 
     // Start is called before the first frame update
@@ -80,10 +81,10 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
         var cameraOffset = new Vector3(-PlayerControllableTransform.localPosition.z,
-            PlayerControllableTransform.localPosition.y, 0f);
+            0, 0f);
 
         CameraTransform.localPosition = cameraOffset * CameraRadius / ControlRadius;
-        CameraTransform.localPosition -= Vector3.forward * 3;
+        CameraTransform.localPosition -= Vector3.forward * CameraTrailDistance;
         CameraTransform.LookAt(PlayerRootTransform, PlayerRootTransform.up);
     }
 
