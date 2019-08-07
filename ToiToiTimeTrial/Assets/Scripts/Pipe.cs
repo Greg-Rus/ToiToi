@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Pipe : MonoBehaviour
@@ -100,14 +101,12 @@ public class Pipe : MonoBehaviour
     {
         uv = new Vector2[_vertices.Length];
         int index = 0;
+        int curveIndex = 0;
         float step = 1f / PipeSegmentCount;
+        float curveStep = 1f / _curveSegmentCount;
         for (int i = 0; i < _vertices.Length; i += 4)
         {
-            index++;
-            if (index == PipeSegmentCount)
-            {
-                index = 0;
-            }
+
             var offsetClose = index * step;
 
             var offsetFar = offsetClose + step;
@@ -115,13 +114,54 @@ public class Pipe : MonoBehaviour
             {
                 offsetFar = 1f;
             }
-            uv[i]     = new Vector2(offsetClose, 0);
-            uv[i + 1] = new Vector2(offsetFar, 0);
-            uv[i + 2] = new Vector2(offsetClose, 1);
-            uv[i + 3] = new Vector2(offsetFar, 1);
+
+            var curveClose = curveIndex * curveStep;
+            var curveFar = curveClose + curveStep;
+
+            uv[i] = new Vector2(offsetClose, curveClose);
+            uv[i + 1] = new Vector2(offsetFar, curveClose);
+            uv[i + 2] = new Vector2(offsetClose, curveFar);
+            uv[i + 3] = new Vector2(offsetFar, curveFar);
+
+
+            index++;
+            if (index == PipeSegmentCount)
+            {
+                index = 0;
+                curveIndex++;
+            }
+
         }
         _mesh.uv = uv;
+
     }
+
+    //private void SetUV()
+    //{
+    //    uv = new Vector2[_vertices.Length];
+    //    int index = 0;
+    //    float step = 1f / PipeSegmentCount;
+    //    for (int i = 0; i < _vertices.Length; i += 4)
+    //    {
+    //        index++;
+    //        if (index == PipeSegmentCount)
+    //        {
+    //            index = 0;
+    //        }
+    //        var offsetClose = index * step;
+
+    //        var offsetFar = offsetClose + step;
+    //        if (index == PipeSegmentCount - 1)
+    //        {
+    //            offsetFar = 1f;
+    //        }
+    //        uv[i]     = new Vector2(offsetClose, 0);
+    //        uv[i + 1] = new Vector2(offsetFar, 0);
+    //        uv[i + 2] = new Vector2(offsetClose, 1);
+    //        uv[i + 3] = new Vector2(offsetFar, 1);
+    //    }
+    //    _mesh.uv = uv;
+    //}
 
     private void SetVertices()
     {
@@ -143,7 +183,6 @@ public class Pipe : MonoBehaviour
     {
         float vStep = (2f * Mathf.PI) / PipeSegmentCount;
         int ringOffset = PipeSegmentCount * 4;
-
         Vector3 vertex = GetPointOnTorus(u, 0f);
         for (int v = 1; v <= PipeSegmentCount; v++, i += 4)
         {
@@ -184,7 +223,7 @@ public class Pipe : MonoBehaviour
 
     public void AlignWith(Pipe pipe)
     {
-        float relativeRotation = Random.Range(0, _curveSegmentCount) * 360f / PipeSegmentCount;
+        float relativeRotation = 90f;//Random.Range(0, _curveSegmentCount) * 360f / PipeSegmentCount;
 
         transform.SetParent(pipe.transform, false);
         transform.localPosition = Vector3.zero;

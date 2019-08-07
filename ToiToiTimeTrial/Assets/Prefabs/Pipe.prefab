@@ -47,13 +47,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurveRadius: 0
   PipeRadius: 2
-  PipeSegmentCount: 30
+  PipeSegmentCount: 20
   RingDistance: 1
   CurveAngle: 0
   minCurveRadius: 30
-  maxCurveRadius: 50
-  minCurveSegmentCount: 16
-  maxCurveSegmentCount: 24
+  maxCurveRadius: 30
+  minCurveSegmentCount: 90
+  maxCurveSegmentCount: 90
   MyMeshFilter: {fileID: 4707651749491889920}
   Obstacles:
   - {fileID: 2258602298302165808, guid: 09f2ec13cdc2bd14daedeb14170f08e9, type: 3}
@@ -77,7 +77,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 90cdc9bdc97853f4183d861a6ffa6d0a, type: 2}
+  - {fileID: 2100000, guid: 0824f46097669e54c80c1e1aafcb481e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
