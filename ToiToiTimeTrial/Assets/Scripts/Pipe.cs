@@ -15,16 +15,20 @@ public class Pipe : MonoBehaviour
     public int minCurveSegmentCount, maxCurveSegmentCount;
 
     public MeshFilter MyMeshFilter;
+    public MeshRenderer MyMeshRenderer;
     private Mesh _mesh;
     private Vector3[] _vertices;
     private int[] _triangles;
     private Vector2[] uv;
 
     public GameObject[] Obstacles;
+    public Material Material;
+    public float AccumulatedRotation;
 
     // Start is called before the first frame update
     void Awake()
     {
+        MyMeshRenderer.material = new Material(Material);
         CurveRadius = Random.Range(minCurveRadius, maxCurveRadius);
         _curveSegmentCount =
             Random.Range(minCurveSegmentCount, maxCurveSegmentCount + 1);
@@ -60,7 +64,6 @@ public class Pipe : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     private Vector3 GetPointOnTorus(float angleAlongCurve, float angleAlongPipe)
@@ -223,8 +226,18 @@ public class Pipe : MonoBehaviour
 
     public void AlignWith(Pipe pipe)
     {
-        float relativeRotation = 90f;//Random.Range(0, _curveSegmentCount) * 360f / PipeSegmentCount;
+        var relativeRotation = Random.Range(0, _curveSegmentCount) * 360f / PipeSegmentCount;
+        AccumulatedRotation = pipe.AccumulatedRotation + relativeRotation;
+        if (AccumulatedRotation >= 360f)
+        {
+            AccumulatedRotation = AccumulatedRotation - 360;
+        }
 
+        float normalizedRotationOffset = AccumulatedRotation / 360f;
+
+        
+        MyMeshRenderer.material.SetFloat("Vector1_E94C06A8", normalizedRotationOffset);
+        
         transform.SetParent(pipe.transform, false);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.Euler(0f, 0f, -pipe.CurveAngle);

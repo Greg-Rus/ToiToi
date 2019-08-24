@@ -104,4 +104,22 @@ public class PlayerLocomotion : MonoBehaviour
     {
         transform.Rotate(new Vector3(0f, 0f, -distanceTraveled));
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("hitZone"))
+        {
+            Debug.Log("Damage");
+        }
+
+        
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("paradox"))
+        {
+            Destroy(other.gameObject);
+        }
+    }
 }
