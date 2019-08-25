@@ -18,6 +18,7 @@ public class Pipe : MonoBehaviour
     public MeshRenderer MyMeshRenderer;
     private Mesh _mesh;
     private Vector3[] _vertices;
+    private Vector3[] _normals;
     private int[] _triangles;
     private Vector2[] uv;
 
@@ -39,7 +40,7 @@ public class Pipe : MonoBehaviour
         SetVertices();
         SetTriangles();
         SetUV();
-        _mesh.RecalculateNormals();
+        //_mesh.RecalculateNormals();
 
         SpawnObstacles();
     }
@@ -86,20 +87,6 @@ public class Pipe : MonoBehaviour
         return p;
     }
 
-    //private void SetUV()
-    //{
-    //    uv = new Vector2[_vertices.Length];
-    //    for (int i = 0; i < _vertices.Length; i += 4)
-    //    {
-    //        uv[i] = Vector2.zero;
-    //        uv[i + 1] = Vector2.right;
-    //        uv[i + 2] = Vector2.up;
-    //        uv[i + 3] = Vector2.one;
-    //    }
-    //    _mesh.uv = uv;
-
-    //}
-
     private void SetUV()
     {
         uv = new Vector2[_vertices.Length];
@@ -139,36 +126,10 @@ public class Pipe : MonoBehaviour
 
     }
 
-    //private void SetUV()
-    //{
-    //    uv = new Vector2[_vertices.Length];
-    //    int index = 0;
-    //    float step = 1f / PipeSegmentCount;
-    //    for (int i = 0; i < _vertices.Length; i += 4)
-    //    {
-    //        index++;
-    //        if (index == PipeSegmentCount)
-    //        {
-    //            index = 0;
-    //        }
-    //        var offsetClose = index * step;
-
-    //        var offsetFar = offsetClose + step;
-    //        if (index == PipeSegmentCount - 1)
-    //        {
-    //            offsetFar = 1f;
-    //        }
-    //        uv[i]     = new Vector2(offsetClose, 0);
-    //        uv[i + 1] = new Vector2(offsetFar, 0);
-    //        uv[i + 2] = new Vector2(offsetClose, 1);
-    //        uv[i + 3] = new Vector2(offsetFar, 1);
-    //    }
-    //    _mesh.uv = uv;
-    //}
-
     private void SetVertices()
     {
         _vertices = new Vector3[PipeSegmentCount * _curveSegmentCount * 4];
+        _normals = new Vector3[PipeSegmentCount * _curveSegmentCount * 4];
         float uStep = RingDistance / _curveSegmentCount;
         CurveAngle = uStep * _curveSegmentCount * (360f / (2f * Mathf.PI));
         CreateFirstQuadRing(uStep);
@@ -180,6 +141,7 @@ public class Pipe : MonoBehaviour
         }
 
         _mesh.vertices = _vertices;
+        _mesh.normals = _normals;
     }
 
     private void CreateQuadRing(float u, int i)
@@ -190,9 +152,16 @@ public class Pipe : MonoBehaviour
         for (int v = 1; v <= PipeSegmentCount; v++, i += 4)
         {
             _vertices[i] = _vertices[i - ringOffset + 2];
+            _normals[i] = _normals[i - ringOffset + 2];
+
             _vertices[i + 1] = _vertices[i - ringOffset + 3];
+            _normals[i + 1] = _normals[i - ringOffset + 3];
+
             _vertices[i + 2] = vertex;
+            _normals[i + 2] = _vertices[i + 2].GetNormalToCurvePoint(GetPointOnCurve(u));
+
             _vertices[i + 3] = vertex = GetPointOnTorus(u, v * vStep);
+            _normals[i + 3] = _vertices[i + 3].GetNormalToCurvePoint(GetPointOnCurve(u));
         }
     }
 
@@ -205,9 +174,16 @@ public class Pipe : MonoBehaviour
         for (int v = 1, i = 0; v <= PipeSegmentCount; v++, i += 4)
         {
             _vertices[i] = vertexA;
+            _normals[i] = _vertices[i].GetNormalToCurvePoint(GetPointOnCurve(0));
+
             _vertices[i + 1] = vertexA = GetPointOnTorus(0f, v * vStep);
+            _normals[i + 1] = _vertices[i + 1].GetNormalToCurvePoint(GetPointOnCurve(0));
+
             _vertices[i + 2] = vertexB;
+            _normals[i + 2] = _vertices[i + 2].GetNormalToCurvePoint(GetPointOnCurve(u));
+
             _vertices[i + 3] = vertexB = GetPointOnTorus(u, v * vStep);
+            _normals[i + 3] = _vertices[i + 3].GetNormalToCurvePoint(GetPointOnCurve(u));
         }
     }
 
@@ -245,5 +221,15 @@ public class Pipe : MonoBehaviour
         transform.Rotate(relativeRotation, 0f, 0f);
         transform.Translate(0f, -CurveRadius, 0f);
         transform.SetParent(pipe.transform.parent);
+    }
+
+
+}
+
+public static class VertexHelper
+{
+    public static Vector3 GetNormalToCurvePoint(this Vector3 vertex, Vector3 curvePoint)
+    {
+        return (curvePoint - vertex).normalized;
     }
 }

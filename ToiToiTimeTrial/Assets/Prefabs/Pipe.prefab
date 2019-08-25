@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurveRadius: 0
   PipeRadius: 2
-  PipeSegmentCount: 20
+  PipeSegmentCount: 30
   RingDistance: 1
   CurveAngle: 0
   minCurveRadius: 30
@@ -61,7 +61,8 @@ MonoBehaviour:
   - {fileID: 2258602298302165808, guid: 4c0e00f98971baf40ba6396801ff08e1, type: 3}
   - {fileID: 2258602298302165808, guid: 89b4ed95db9e8cb47b541f6838183187, type: 3}
   - {fileID: 2258602298302165808, guid: e9f72cfbeea25f44c9f8ecb8b5e74f4c, type: 3}
-  Material: {fileID: 2100000, guid: 0824f46097669e54c80c1e1aafcb481e, type: 2}
+  Material: {fileID: 2100000, guid: eca6d466416a0c747b8fd034c437a31a, type: 2}
+  AccumulatedRotation: 0
 --- !u!23 &4707651749491889921
 MeshRenderer:
   m_ObjectHideFlags: 0
