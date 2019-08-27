@@ -50,10 +50,10 @@ MonoBehaviour:
   PipeSegmentCount: 30
   RingDistance: 1
   CurveAngle: 0
-  minCurveRadius: 30
-  maxCurveRadius: 30
-  minCurveSegmentCount: 90
-  maxCurveSegmentCount: 90
+  minCurveRadius: 20
+  maxCurveRadius: 20
+  minCurveSegmentCount: 30
+  maxCurveSegmentCount: 30
   MyMeshFilter: {fileID: 4707651749491889920}
   MyMeshRenderer: {fileID: 4707651749491889921}
   Obstacles:

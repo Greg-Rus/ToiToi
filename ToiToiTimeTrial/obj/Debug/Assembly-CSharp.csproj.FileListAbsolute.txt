@@ -122,7 +122,6 @@ K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.Analytics.StandardEvents.dll
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.Analytics.Tracker.dll
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.CollabProxy.Editor.dll
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.Locator.dll
-K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.PackageManagerUI.Editor.dll
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.Postprocessing.Editor.dll
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.Postprocessing.Runtime.dll
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.RenderPipelines.Core.Editor.dll
@@ -212,7 +211,6 @@ K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.RenderPipelines.Core.Runtime
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.TextMeshPro.Editor.pdb
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.RenderPipelines.Lightweight.Runtime.pdb
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.RenderPipelines.Lightweight.Editor.pdb
-K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.PackageManagerUI.Editor.pdb
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.Timeline.pdb
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.CollabProxy.Editor.pdb
 K:\Kata\ToiToi\ToiToiTimeTrial\Temp\bin\Debug\Unity.Postprocessing.Editor.pdb

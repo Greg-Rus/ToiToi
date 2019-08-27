@@ -151,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pipePrefab: {fileID: 4707651749491889926, guid: 305317c84c06832409fe34de2447fba6,
     type: 3}
-  pipeCount: 1
+  pipeCount: 40
 --- !u!4 &99156805
 Transform:
   m_ObjectHideFlags: 0
@@ -542,7 +542,7 @@ MonoBehaviour:
   CameraTransform: {fileID: 345689948}
   ControlRadius: 1.5
   CameraRadius: 0.9
-  ForwardSpeed: 1
+  ForwardSpeed: 300
   StrafeSpeed: 6
   Joystick: {fileID: 665789892}
   HorizontalInput: 0

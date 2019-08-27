@@ -202,17 +202,17 @@ public class Pipe : MonoBehaviour
 
     public void AlignWith(Pipe pipe)
     {
-        var relativeRotation = Random.Range(0, _curveSegmentCount) * 360f / PipeSegmentCount;
+        var relativeRotation = Random.Range(0, PipeSegmentCount /2) * 360f / PipeSegmentCount;
         AccumulatedRotation = pipe.AccumulatedRotation + relativeRotation;
         if (AccumulatedRotation >= 360f)
         {
             AccumulatedRotation = AccumulatedRotation - 360;
         }
 
-        float normalizedRotationOffset = AccumulatedRotation / 360f;
+        float normalizedRotationOffset = AccumulatedRotation / 180f;
 
         
-        MyMeshRenderer.material.SetFloat("Vector1_E94C06A8", normalizedRotationOffset);
+        MyMeshRenderer.material.SetFloat("Vector1_487CCA14", normalizedRotationOffset);
         
         transform.SetParent(pipe.transform, false);
         transform.localPosition = Vector3.zero;
