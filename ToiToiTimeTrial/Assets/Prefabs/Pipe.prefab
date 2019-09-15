@@ -61,6 +61,7 @@ MonoBehaviour:
   - {fileID: 2258602298302165808, guid: 4c0e00f98971baf40ba6396801ff08e1, type: 3}
   - {fileID: 2258602298302165808, guid: 89b4ed95db9e8cb47b541f6838183187, type: 3}
   - {fileID: 2258602298302165808, guid: e9f72cfbeea25f44c9f8ecb8b5e74f4c, type: 3}
+  Moment: {fileID: 3419239774448266994, guid: a4466b5fac7bcd94ba2c30d18d14aa84, type: 3}
   Material: {fileID: 2100000, guid: eca6d466416a0c747b8fd034c437a31a, type: 2}
   AccumulatedRotation: 0
 --- !u!23 &4707651749491889921

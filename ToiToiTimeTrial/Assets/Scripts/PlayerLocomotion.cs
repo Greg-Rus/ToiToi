@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ControlType
+{
+    DirectNoSmooth,
+    DirectLerpSmooth,
+    Additive
+}
+
 public class PlayerLocomotion : MonoBehaviour
 {
     public PipeSystem PipeSystem;
     public Transform PlayerRootTransform;
     public Transform PlayerControllableTransform;
     public Transform CameraTransform;
+    public Transform CameraLookTarget;
     public float ControlRadius = 1.9f;
     public float CameraRadius = 1.6f;
+    public float MaxCameraCorrectionAngle;
+    public ControlType SelectedControlType;
 
     public float ForwardSpeed;
     public float StrafeSpeed;
@@ -27,10 +37,12 @@ public class PlayerLocomotion : MonoBehaviour
     public float VerticalInput;
     public float CameraTrailDistance;
 
+    private GameManager _gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        _gameManager = GameManager.Instance;
         TransferToNextPipe(0);
     }
 
@@ -69,23 +81,33 @@ public class PlayerLocomotion : MonoBehaviour
         var playerDirection = ((Vector3.up * Joystick.Vertical) +
                               (Vector3.back * Joystick.Horizontal));
 
-        var strafeDistance = playerDirection * StrafeSpeed * Time.smoothDeltaTime;
-        if ((PlayerControllableTransform.localPosition + strafeDistance).sqrMagnitude < ControlRadius * ControlRadius)
+        if (SelectedControlType == ControlType.Additive)
         {
-            PlayerControllableTransform.localPosition += strafeDistance;
+            var strafeDistance = playerDirection * StrafeSpeed * Time.smoothDeltaTime;
+            if ((PlayerControllableTransform.localPosition + strafeDistance).sqrMagnitude < ControlRadius * ControlRadius)
+            {
+                PlayerControllableTransform.localPosition += strafeDistance;
+            }
+            else
+            {
+                PlayerControllableTransform.localPosition =
+                    (PlayerControllableTransform.localPosition + strafeDistance).normalized * ControlRadius;
+            }
         }
-        else
+        else if(SelectedControlType == ControlType.DirectNoSmooth)
         {
-            PlayerControllableTransform.localPosition =
-                (PlayerControllableTransform.localPosition + strafeDistance).normalized * ControlRadius;
+            var strafePosition = playerDirection * ControlRadius;
+            PlayerControllableTransform.localPosition = strafePosition;
         }
+        else if (SelectedControlType == ControlType.DirectLerpSmooth)
+        {
+            var strafePosition = playerDirection * ControlRadius;
+            PlayerControllableTransform.localPosition = Vector3.Lerp(PlayerControllableTransform.localPosition, strafePosition, 0.5f);
+        }
+        
+        
 
-        var cameraOffset = new Vector3(-PlayerControllableTransform.localPosition.z,
-            0, 0f);
-
-        CameraTransform.localPosition = cameraOffset * CameraRadius / ControlRadius;
-        CameraTransform.localPosition -= Vector3.forward * CameraTrailDistance;
-        CameraTransform.LookAt(PlayerRootTransform, PlayerRootTransform.up);
+        CameraTransform.LookAt(CameraLookTarget, CameraLookTarget.up);
     }
 
     private void MovePlayerForward()
@@ -112,14 +134,15 @@ public class PlayerLocomotion : MonoBehaviour
             Debug.Log("Damage");
         }
 
-        
+        if (other.CompareTag("paradox"))
+        {
+            Debug.Log("Pass");
+            Destroy(other.gameObject);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("paradox"))
-        {
-            Destroy(other.gameObject);
-        }
+
     }
 }

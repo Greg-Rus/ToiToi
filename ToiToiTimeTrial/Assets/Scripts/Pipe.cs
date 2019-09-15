@@ -23,6 +23,7 @@ public class Pipe : MonoBehaviour
     private Vector2[] uv;
 
     public GameObject[] Obstacles;
+    public GameObject Moment;
     public Material Material;
     public float AccumulatedRotation;
 
@@ -40,16 +41,29 @@ public class Pipe : MonoBehaviour
         SetVertices();
         SetTriangles();
         SetUV();
-        //_mesh.RecalculateNormals();
 
         SpawnObstacles();
+        SpawnMoments();
+    }
+
+    private void SpawnMoments()
+    {
+        ParentPickupAlongPipe(
+            Instantiate(Moment).transform,
+            0.25f,
+            Random.Range(0, PipeRadius));
+
+        ParentPickupAlongPipe(
+            Instantiate(Moment).transform,
+            0.75f,
+            Random.Range(0, PipeRadius));
     }
 
     private void SpawnObstacles()
     {
-        ParentObstacleAlongPipe(Instantiate(Obstacles[Random.Range(0,Obstacles.Length)]).transform, 0.25f);
+        ParentObstacleAlongPipe(Instantiate(Obstacles[Random.Range(0,Obstacles.Length)]).transform, 0f);
         ParentObstacleAlongPipe(Instantiate(Obstacles[Random.Range(0, Obstacles.Length)]).transform, 0.5f);
-        ParentObstacleAlongPipe(Instantiate(Obstacles[Random.Range(0, Obstacles.Length)]).transform, 0.75f);
+        //ParentObstacleAlongPipe(Instantiate(Obstacles[Random.Range(0, Obstacles.Length)]).transform, 0.75f);
     }
 
     private void ParentObstacleAlongPipe(Transform obstacle, float pipePercentage)
@@ -60,6 +74,16 @@ public class Pipe : MonoBehaviour
         obstacle.transform.position = transform.position;
         obstacle.transform.position += obstacle.transform.up * CurveRadius;
         obstacle.transform.Rotate(Vector3.right * Random.Range(0f,360f));
+    }
+
+    private void ParentPickupAlongPipe(Transform pickup, float pipePercentage, float distanceFromCenter)
+    {
+        pickup.transform.SetParent(transform);
+        pickup.transform.rotation = transform.rotation;
+        pickup.transform.Rotate(Vector3.back * pipePercentage * CurveAngle);
+        pickup.transform.position = transform.position;
+        pickup.transform.position += pickup.transform.up * CurveRadius;
+        pickup.transform.position -= pickup.transform.up * distanceFromCenter;
     }
 
     // Update is called once per frame
