@@ -113,6 +113,7 @@ public class PlayerLocomotion : MonoBehaviour
     private void MovePlayerForward()
     {
         var distanceTraveled = ForwardSpeed * Time.smoothDeltaTime  / _currentPipe.CurveRadius;
+        _gameManager.UpdateDistance(distanceTraveled);
         _pipeProgress += distanceTraveled;
         if (_pipeProgress + distanceTraveled >= _currentPipe.CurveAngle)
         {
@@ -131,18 +132,12 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (other.CompareTag("hitZone"))
         {
-            Debug.Log("Damage");
+            _gameManager.OnParadoxHit();
         }
 
         if (other.CompareTag("paradox"))
         {
-            Debug.Log("Pass");
             Destroy(other.gameObject);
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-
     }
 }
